@@ -92,4 +92,60 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("D", "E", "F", "A", "U", "L", "T")
                 .verifyComplete();
     }
+
+    @Test
+    void explore_concat() {
+        var concatFlux = fluxAndMonoGeneratorService.explore_concat();
+        StepVerifier.create(concatFlux)
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_concat_with() {
+        var concatFluxWith = fluxAndMonoGeneratorService.explore_concat_with();
+        StepVerifier.create(concatFluxWith)
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_concatWith_MOno() {
+        var concat_With_Mono = fluxAndMonoGeneratorService.explore_concatWith_MOno();
+        StepVerifier.create(concat_With_Mono)
+                .expectNext("A", "B")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_merge() {
+        var mergeFlux = fluxAndMonoGeneratorService.explore_merge();
+        StepVerifier.create(mergeFlux)
+                .expectNext("A", "D", "B", "E", "C", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_mergeWith() {
+        var mergeFlux = fluxAndMonoGeneratorService.explore_mergeWith();
+        StepVerifier.create(mergeFlux)
+                .expectNext("A", "D", "B", "E", "C", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_merge_withMono() {
+        var mergeFluxMono = fluxAndMonoGeneratorService.explore_merge_withMono();
+        StepVerifier.create(mergeFluxMono)
+                .expectNext("A", "B")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_mergeSeq() {
+        var mergeSeq = fluxAndMonoGeneratorService.explore_mergeSeq();
+        StepVerifier.create(mergeSeq)
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
 }
