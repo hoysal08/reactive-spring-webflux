@@ -142,9 +142,34 @@ public class FluxAndMonoGeneratorService {
                 .delayElements(Duration.ofMillis(100));
         var defFlux = Flux.just("D", "E", "F")
                 .delayElements(Duration.ofMillis(125));
-        return Flux.mergeSequential(abcFlux,defFlux);
+        return Flux.mergeSequential(abcFlux, defFlux);
     }
 
+    public Flux<String> exploreZip() {
+        var abcFlux = Flux.just("A", "B", "C")
+                .delayElements(Duration.ofMillis(100));
+        var defFlux = Flux.just("D", "E", "F")
+                .delayElements(Duration.ofMillis(125));
+        return Flux.zip(abcFlux, defFlux).map(tup -> tup.getT1() + tup.getT2());
+//        return Flux.zip(abcFlux, defFlux, (f, s) -> f + s);
+    }
+
+    public Flux<String> exploreZip_With() {
+        var abcFlux = Flux.just("A", "B", "C")
+                .delayElements(Duration.ofMillis(100));
+        var defFlux = Flux.just("D", "E", "F")
+                .delayElements(Duration.ofMillis(125));
+
+        return abcFlux.zipWith(defFlux, (f, s) -> f + s);
+    }
+
+    public Mono<String> exploreZip_With_Mono() {
+        var aMono = Mono.just("A");
+        var bMono = Mono.just("B");
+
+        return aMono.zipWith(bMono)
+                .map(t2 -> t2.getT1() + t2.getT2());
+    }
 
     public static void main(String[] args) {
         FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
