@@ -37,9 +37,12 @@ class MovieInfoRepositoryIntgTest {
     @Test
     void findById() {
         var moviesInfoFlux = movieInfoRepository.findById("abc");
-        var moviesInfoFluxs = movieInfoRepository.findById("abc").block();
-        StepVerifier.create(moviesInfoFlux).assertNext(movieInfo -> assertEquals("Dark Knight Rises", movieInfo.getName()));
+        StepVerifier.create(moviesInfoFlux).assertNext(movieInfo -> {
+            assertNotNull(movieInfo.getMovieInfoId());
+            assertEquals("Dark Knight Rises", movieInfo.getName());
+        });
     }
+
 
     @Test
     void saveMovieInfo() {
@@ -76,6 +79,15 @@ class MovieInfoRepositoryIntgTest {
 
         StepVerifier.create(movieInfoFlux)
                 .expectNextCount(2)
+                .verifyComplete();
+    }
+
+    @Test
+    void findByYear() {
+        var movieInfoFlux = movieInfoRepository.findByYear(2005).log();
+
+        StepVerifier.create(movieInfoFlux)
+                .expectNextCount(1)
                 .verifyComplete();
     }
 }
